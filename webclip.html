@@ -1,27 +1,284 @@
-<p><!DOCTYPE html> <html lang=&quot;en&quot;> <head>  <meta charset=&quot;UTF-8&quot;>  <meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;>  <title>webclip.me</title>  <style>  :root {  --primary-color: #3498db;  --secondary-color: #2980b9;  --background-color: #ecf0f1;  --text-color: #2c3e50;  }  body {  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;  background-color: var(--background-color);  color: var(--text-color);  line-height: 1.6;  margin: 0;  padding: 0;  }  .container {  max-width: 600px;  margin: 2rem auto;  padding: 2rem;  background-color: #fff;  border-radius: 8px;  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  }  h1 {  text-align: center;  color: var(--primary-color);  }  form {  display: flex;  flex-direction: column;  }  label {  margin-top: 1rem;  font-weight: bold;  }  input[type=&quot;text&quot;], input[type=&quot;url&quot;], input[type=&quot;file&quot;] {  margin-bottom: 1rem;  padding: 0.5rem;  border: 1px solid #ddd;  border-radius: 4px;  font-size: 1rem;  }  button {  background-color: var(--primary-color);  color: white;  padding: 0.75rem;  border: none;  border-radius: 4px;  cursor: pointer;  font-size: 1rem;  transition: background-color 0.3s, transform 0.1s;  }  button:hover {  background-color: var(--secondary-color);  }  button:active {  transform: scale(0.98);  }  #advanced-options {  display: none;  margin-top: 1rem;  border: 1px solid #ddd;  padding: 1rem;  border-radius: 4px;  }  #advanced-toggle {  color: var(--primary-color);  cursor: pointer;  display: flex;  align-items: center;  font-size: 0.9rem;  margin-bottom: 1rem;  }  #advanced-toggle:hover {  text-decoration: underline;  }  #result {  margin-top: 2rem;  text-align: center;  }  .loading-bar {  height: 4px;  width: 100%;  background-color: #f0f0f0;  margin-top: 1rem;  display: none;  }  .loading-bar-progress {  height: 100%;  width: 0;  background-color: var(--primary-color);  transition: width 0.5s ease-out;  }  .advanced-grid {  display: grid;  grid-template-columns: 1fr 1fr;  gap: 1rem;  }  .advanced-grid > div {  display: flex;  flex-direction: column;  }  .settings-icon {  width: 16px;  height: 16px;  margin-right: 5px;  }  </style> </head> <body>  <div class=&quot;container&quot;>  <h1>webclip.me</h1>  <form id=&quot;webclip-form&quot;>  <div id=&quot;advanced-toggle&quot;>  <svg class=&quot;settings-icon&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;>  <circle cx=&quot;12&quot; cy=&quot;12&quot; r=&quot;3&quot;></circle>  <path d=&quot;M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z&quot;></path>  </svg>  Advanced Options  </div></p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>webclip.me</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --background-color: #ecf0f1;
+            --text-color: #2c3e50;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-top: 1rem;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="url"], input[type="file"] {
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+        button:hover {
+            background-color: var(--secondary-color);
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+        #advanced-options {
+            display: none;
+            margin-top: 1rem;
+            border: 1px solid #ddd;
+            padding: 1rem;
+            border-radius: 4px;
+        }
+        #advanced-toggle {
+            color: var(--primary-color);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        #advanced-toggle:hover {
+            text-decoration: underline;
+        }
+        #result {
+            margin-top: 2rem;
+            text-align: center;
+        }
+        .loading-bar {
+            height: 4px;
+            width: 100%;
+            background-color: #f0f0f0;
+            margin-top: 1rem;
+            display: none;
+        }
+        .loading-bar-progress {
+            height: 100%;
+            width: 0;
+            background-color: var(--primary-color);
+            transition: width 0.5s ease-out;
+        }
+        .advanced-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        .advanced-grid > div {
+            display: flex;
+            flex-direction: column;
+        }
+        .settings-icon {
+            width: 16px;
+            height: 16px;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>webclip.me</h1>
+        <form id="webclip-form">
+            <div id="advanced-toggle">
+                <svg class="settings-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+                Advanced Options
+            </div>
 
-<p> <div id=&quot;advanced-options&quot;>  <div class=&quot;advanced-grid&quot;>  <div>  <label for=&quot;org-name&quot;>Organization Name:</label>  <input type=&quot;text&quot; id=&quot;org-name&quot; placeholder=&quot;My Organization&quot;>  </div>  <div>  <label for=&quot;install-desc&quot;>Install Description:</label>  <input type=&quot;text&quot; id=&quot;install-desc&quot; placeholder=&quot;Custom Web Clip Configuration&quot;>  </div>  <div>  <label for=&quot;file-name&quot;>Install File Name:</label>  <input type=&quot;text&quot; id=&quot;file-name&quot; placeholder=&quot;webclip&quot;>  </div>  </div>  </div></p>
+            <div id="advanced-options">
+                <div class="advanced-grid">
+                    <div>
+                        <label for="org-name">Organization Name:</label>
+                        <input type="text" id="org-name" placeholder="My Organization">
+                    </div>
+                    <div>
+                        <label for="install-desc">Install Description:</label>
+                        <input type="text" id="install-desc" placeholder="Custom Web Clip Configuration">
+                    </div>
+                    <div>
+                        <label for="file-name">Install File Name:</label>
+                        <input type="text" id="file-name" placeholder="webclip">
+                    </div>
+                </div>
+            </div>
 
-<p> <label for=&quot;title&quot;>Webclip Title:</label>  <input type=&quot;text&quot; id=&quot;title&quot; required></p>
+            <label for="title">Webclip Title:</label>
+            <input type="text" id="title" required>
 
-<p> <label for=&quot;url&quot;>Website URL:</label>  <input type=&quot;url&quot; id=&quot;url&quot; required></p>
+            <label for="url">Website URL:</label>
+            <input type="url" id="url" required>
 
-<p> <label for=&quot;icon&quot;>Icon (PNG, 180x180px):</label>  <input type=&quot;file&quot; id=&quot;icon&quot; accept=&quot;image/png&quot; required></p>
+            <label for="icon">Icon (PNG, 180x180px):</label>
+            <input type="file" id="icon" accept="image/png" required>
 
-<p> <button type=&quot;submit&quot;>Generate Webclip</button>  </form>  <div class=&quot;loading-bar&quot;>  <div class=&quot;loading-bar-progress&quot;></div>  </div>  <div id=&quot;result&quot;></div>  </div></p>
+            <button type="submit">Generate Webclip</button>
+        </form>
+        <div class="loading-bar">
+            <div class="loading-bar-progress"></div>
+        </div>
+        <div id="result"></div>
+    </div>
 
-<p> <script>  document.addEventListener('DOMContentLoaded', function() {  const advancedToggle = document.getElementById('advanced-toggle');  const advancedOptions = document.getElementById('advanced-options');</p>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const advancedToggle = document.getElementById('advanced-toggle');
+            const advancedOptions = document.getElementById('advanced-options');
 
-<p> advancedToggle.addEventListener('click', function(e) {  e.preventDefault();  e.stopPropagation();  advancedOptions.style.display = advancedOptions.style.display === 'none' ? 'block' : 'none';  });</p>
+            advancedToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                advancedOptions.style.display = advancedOptions.style.display === 'none' ? 'block' : 'none';
+            });
 
-<p> document.getElementById('webclip-form').addEventListener('submit', function(e) {  e.preventDefault();    const title = document.getElementById('title').value;  let url = document.getElementById('url').value;  const iconFile = document.getElementById('icon').files[0];  const orgName = document.getElementById('org-name').value || 'My Organization';  const installDesc = document.getElementById('install-desc').value || 'Custom Web Clip Configuration';  const fileName = document.getElementById('file-name').value || 'webclip';    if (!/^https?:\/\//i.test(url)) {  url = 'https://' + url;  }    if (iconFile) {  showLoadingBar();  const reader = new FileReader();  reader.onload = function(e) {  const iconData = e.target.result;  generateWebclip(title, url, iconData, orgName, installDesc, fileName);  };  reader.readAsDataURL(iconFile);  }  });  });</p>
+            document.getElementById('webclip-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const title = document.getElementById('title').value;
+                let url = document.getElementById('url').value;
+                const iconFile = document.getElementById('icon').files[0];
+                const orgName = document.getElementById('org-name').value || 'My Organization';
+                const installDesc = document.getElementById('install-desc').value || 'Custom Web Clip Configuration';
+                const fileName = document.getElementById('file-name').value || 'webclip';
+                
+                if (!/^https?:\/\//i.test(url)) {
+                    url = 'https://' + url;
+                }
+                
+                if (iconFile) {
+                    showLoadingBar();
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const iconData = e.target.result;
+                        generateWebclip(title, url, iconData, orgName, installDesc, fileName);
+                    };
+                    reader.readAsDataURL(iconFile);
+                }
+            });
+        });
 
-<p> function generateWebclip(title, url, iconData, orgName, installDesc, fileName) {  const webclipContent = &#96;<?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?> <!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;> <plist version=&quot;1.0&quot;> <dict>  <key>PayloadContent</key>  <array>  <dict>  <key>FullScreen</key>  <true/>  <key>Icon</key>  <data>${iconData.split(',')[1]}</data>  <key>IsRemovable</key>  <true/>  <key>Label</key>  <string>${title}</string>  <key>PayloadDescription</key>  <string>Configures Web Clip</string>  <key>PayloadDisplayName</key>  <string>${title} Web Clip</string>  <key>PayloadIdentifier</key>  <string>com.${orgName.toLowerCase().replace(/\s+/g, '')}.webclip.${Date.now()}</string>  <key>PayloadType</key>  <string>com.apple.webClip.managed</string>  <key>PayloadUUID</key>  <string>${generateUUID()}</string>  <key>PayloadVersion</key>  <integer>1</integer>  <key>URL</key>  <string>${url}</string>  </dict>  </array>  <key>PayloadDescription</key>  <string>${installDesc}</string>  <key>PayloadDisplayName</key>  <string>${title} Web Clip</string>  <key>PayloadIdentifier</key>  <string>com.${orgName.toLowerCase().replace(/\s+/g, '')}.webclip.${Date.now()}</string>  <key>PayloadRemovalDisallowed</key>  <false/>  <key>PayloadType</key>  <string>Configuration</string>  <key>PayloadUUID</key>  <string>${generateUUID()}</string>  <key>PayloadVersion</key>  <integer>1</integer> </dict> </plist>&#96;;</p>
+        function generateWebclip(title, url, iconData, orgName, installDesc, fileName) {
+            const webclipContent = `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>PayloadContent</key>
+    <array>
+        <dict>
+            <key>FullScreen</key>
+            <true/>
+            <key>Icon</key>
+            <data>${iconData.split(',')[1]}</data>
+            <key>IsRemovable</key>
+            <true/>
+            <key>Label</key>
+            <string>${title}</string>
+            <key>PayloadDescription</key>
+            <string>Configures Web Clip</string>
+            <key>PayloadDisplayName</key>
+            <string>${title} Web Clip</string>
+            <key>PayloadIdentifier</key>
+            <string>com.${orgName.toLowerCase().replace(/\s+/g, '')}.webclip.${Date.now()}</string>
+            <key>PayloadType</key>
+            <string>com.apple.webClip.managed</string>
+            <key>PayloadUUID</key>
+            <string>${generateUUID()}</string>
+            <key>PayloadVersion</key>
+            <integer>1</integer>
+            <key>URL</key>
+            <string>${url}</string>
+        </dict>
+    </array>
+    <key>PayloadDescription</key>
+    <string>${installDesc}</string>
+    <key>PayloadDisplayName</key>
+    <string>${title} Web Clip</string>
+    <key>PayloadIdentifier</key>
+    <string>com.${orgName.toLowerCase().replace(/\s+/g, '')}.webclip.${Date.now()}</string>
+    <key>PayloadRemovalDisallowed</key>
+    <false/>
+    <key>PayloadType</key>
+    <string>Configuration</string>
+    <key>PayloadUUID</key>
+    <string>${generateUUID()}</string>
+    <key>PayloadVersion</key>
+    <integer>1</integer>
+</dict>
+</plist>`;
 
-<p> const encodedContent = encodeURIComponent(webclipContent);  const dataUri = &#96;data:application/x-apple-aspen-config;charset=utf-8,${encodedContent}&#96;;    const resultDiv = document.getElementById('result');  resultDiv.innerHTML = &#96;  <p>Your webclip is ready! Click the button below to download:</p>  <a href=&quot;${dataUri}&quot; download=&quot;${fileName}.mobileconfig&quot;>  <button>Download Webclip</button>  </a>  &#96;;  hideLoadingBar();  }</p>
+            const encodedContent = encodeURIComponent(webclipContent);
+            const dataUri = `data:application/x-apple-aspen-config;charset=utf-8,${encodedContent}`;
+            
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `
+                <p>Your webclip is ready! Click the button below to download:</p>
+                <a href="${dataUri}" download="${fileName}.mobileconfig">
+                    <button>Download Webclip</button>
+                </a>
+            `;
+            hideLoadingBar();
+        }
 
-<p> function generateUUID() {  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {  var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r &amp; 0x3 | 0x8);  return v.toString(16);  });  }</p>
+        function generateUUID() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
 
-<p> function showLoadingBar() {  const loadingBar = document.querySelector('.loading-bar');  const progress = loadingBar.querySelector('.loading-bar-progress');  loadingBar.style.display = 'block';  progress.style.width = '0%';  setTimeout(() => {  progress.style.width = '100%';  }, 50);  }</p>
+        function showLoadingBar() {
+            const loadingBar = document.querySelector('.loading-bar');
+            const progress = loadingBar.querySelector('.loading-bar-progress');
+            loadingBar.style.display = 'block';
+            progress.style.width = '0%';
+            setTimeout(() => {
+                progress.style.width = '100%';
+            }, 50);
+        }
 
-<p> function hideLoadingBar() {  const loadingBar = document.querySelector('.loading-bar');  loadingBar.style.display = 'none';  }  </script> </body> </html></p>
+        function hideLoadingBar() {
+            const loadingBar = document.querySelector('.loading-bar');
+            loadingBar.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
