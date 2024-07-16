@@ -10,7 +10,19 @@
             --secondary-color: #2980b9;
             --background-color: #ecf0f1;
             --text-color: #2c3e50;
+            --container-bg: #fff;
+            --input-border: #ddd;
         }
+
+        .dark-mode {
+            --primary-color: #58a6ff;
+            --secondary-color: #3b8eea;
+            --background-color: #1a1a1a;
+            --text-color: #f0f0f0;
+            --container-bg: #2a2a2a;
+            --input-border: #444;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--background-color);
@@ -18,33 +30,42 @@
             line-height: 1.6;
             margin: 0;
             padding: 0;
+            transition: background-color 0.3s, color 0.3s;
         }
         .container {
+            width: 90%;
             max-width: 600px;
-            margin: 2rem auto;
-            padding: 2rem;
-            background-color: #fff;
+            margin: 1rem auto;
+            padding: 1rem;
+            background-color: var(--container-bg);
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s;
         }
         h1 {
             text-align: center;
             color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
         }
         form {
             display: flex;
             flex-direction: column;
         }
         label {
-            margin-top: 1rem;
+            margin-top: 0.5rem;
             font-weight: bold;
+            font-size: 0.9rem;
         }
         input[type="text"], input[type="url"], input[type="file"] {
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
             padding: 0.5rem;
-            border: 1px solid #ddd;
+            border: 1px solid var(--input-border);
+            background-color: var(--container-bg);
+            color: var(--text-color);
             border-radius: 4px;
-            font-size: 1rem;
+            font-size: 0.9rem;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
         }
         button {
             background-color: var(--primary-color);
@@ -55,6 +76,7 @@
             cursor: pointer;
             font-size: 1rem;
             transition: background-color 0.3s, transform 0.1s;
+            margin-top: 0.5rem;
         }
         button:hover {
             background-color: var(--secondary-color);
@@ -65,7 +87,7 @@
         #advanced-options {
             display: none;
             margin-top: 1rem;
-            border: 1px solid #ddd;
+            border: 1px solid var(--input-border);
             padding: 1rem;
             border-radius: 4px;
         }
@@ -75,13 +97,13 @@
             display: flex;
             align-items: center;
             font-size: 0.9rem;
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
         }
         #advanced-toggle:hover {
             text-decoration: underline;
         }
         #result {
-            margin-top: 2rem;
+            margin-top: 1rem;
             text-align: center;
         }
         .loading-bar {
@@ -99,21 +121,100 @@
         }
         .advanced-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-        .advanced-grid > div {
-            display: flex;
-            flex-direction: column;
+            grid-template-columns: 1fr;
+            gap: 0.5rem;
         }
         .settings-icon {
             width: 16px;
             height: 16px;
             margin-right: 5px;
         }
+        .toggle-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        .toggle-button {
+            background-color: #f0f0f0;
+            border: none;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 0.8rem;
+            flex: 1;
+            margin: 0 0.25rem;
+        }
+        .toggle-button.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        .option-description {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 0.25rem;
+        }
+        @media (min-width: 480px) {
+            .advanced-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        #dark-mode-toggle {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: background-color 0.3s;
+        }
+        #dark-mode-toggle:hover {
+            background-color: var(--secondary-color);
+        }
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+        .file-input-wrapper input[type=file] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+        .file-input-wrapper .file-input-button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: inline-block;
+            font-size: 0.9rem;
+            transition: background-color 0.3s;
+        }
+        .file-input-wrapper:hover .file-input-button {
+            background-color: var(--secondary-color);
+        }
+        .file-input-name {
+            margin-left: 10px;
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 <body>
+    <button id="dark-mode-toggle">🌓</button>
     <div class="container">
         <h1>webclip.me</h1>
         <form id="webclip-form">
@@ -129,15 +230,45 @@
                 <div class="advanced-grid">
                     <div>
                         <label for="org-name">Organization Name:</label>
-                        <input type="text" id="org-name" placeholder="My Organization">
+                        <input type="text" id="org-name" placeholder="webclip.me">
                     </div>
                     <div>
                         <label for="install-desc">Install Description:</label>
-                        <input type="text" id="install-desc" placeholder="Custom Web Clip Configuration">
+                        <input type="text" id="install-desc" placeholder="By webclip.me">
                     </div>
                     <div>
                         <label for="file-name">Install File Name:</label>
                         <input type="text" id="file-name" placeholder="webclip">
+                    </div>
+                    <div>
+                        <label>Full Screen:</label>
+                        <div class="toggle-container">
+                            <button type="button" class="toggle-button active" data-option="full-screen" data-value="yes">Yes</button>
+                            <button type="button" class="toggle-button" data-option="full-screen" data-value="no">No</button>
+                        </div>
+                    </div>
+                    <div>
+                        <label>Removable from Home Screen:</label>
+                        <div class="toggle-container">
+                            <button type="button" class="toggle-button active" data-option="removable" data-value="yes">Yes</button>
+                            <button type="button" class="toggle-button" data-option="removable" data-value="no">No</button>
+                        </div>
+                    </div>
+                    <div>
+                        <label>Ignore Manifest Scope:</label>
+                        <div class="toggle-container">
+                            <button type="button" class="toggle-button" data-option="ignore-manifest-scope" data-value="yes">Yes</button>
+                            <button type="button" class="toggle-button active" data-option="ignore-manifest-scope" data-value="no">No</button>
+                        </div>
+                        <p class="option-description">If yes, a full screen web clip can navigate to an external web site without showing Safari UI. Only applies when Full Screen is yes. Available in iOS 14 and later.</p>
+                    </div>
+                    <div>
+                        <label>Precomposed:</label>
+                        <div class="toggle-container">
+                            <button type="button" class="toggle-button" data-option="precomposed" data-value="yes">Yes</button>
+                            <button type="button" class="toggle-button active" data-option="precomposed" data-value="no">No</button>
+                        </div>
+                        <p class="option-description">If yes, the system prevents SpringBoard from adding shine to the icon.</p>
                     </div>
                 </div>
             </div>
@@ -148,8 +279,12 @@
             <label for="url">Website URL:</label>
             <input type="url" id="url" required>
 
-            <label for="icon">Icon (PNG, 180x180px):</label>
-            <input type="file" id="icon" accept="image/png" required>
+            <label for="icon">App icon:</label>
+            <div class="file-input-wrapper">
+                <button class="file-input-button" type="button">Choose File</button>
+                <input type="file" id="icon" accept="image/png" required>
+                <span class="file-input-name"></span>
+            </div>
 
             <button type="submit">Generate Webclip</button>
         </form>
@@ -161,124 +296,98 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('webclip-form');
             const advancedToggle = document.getElementById('advanced-toggle');
             const advancedOptions = document.getElementById('advanced-options');
+            const resultDiv = document.getElementById('result');
+            const loadingBar = document.querySelector('.loading-bar');
+            const loadingBarProgress = document.querySelector('.loading-bar-progress');
+            const fileInput = document.getElementById('icon');
+            const fileInputName = document.querySelector('.file-input-name');
 
-            advancedToggle.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
+            advancedToggle.addEventListener('click', function() {
                 advancedOptions.style.display = advancedOptions.style.display === 'none' ? 'block' : 'none';
             });
 
-            document.getElementById('webclip-form').addEventListener('submit', function(e) {
+            const toggleButtons = document.querySelectorAll('.toggle-button');
+            toggleButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const option = this.dataset.option;
+                    const value = this.dataset.value;
+                    document.querySelectorAll(`.toggle-button[data-option="${option}"]`).forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                });
+            });
+
+            fileInput.addEventListener('change', function() {
+                if (this.files && this.files.length > 0) {
+                    fileInputName.textContent = this.files[0].name;
+                } else {
+                    fileInputName.textContent = '';
+                }
+            });
+
+            form.addEventListener('submit', function(e) {
                 e.preventDefault();
-                
+                resultDiv.innerHTML = '';
+                loadingBar.style.display = 'block';
+                let progress = 0;
+                const progressInterval = setInterval(() => {
+                    progress += 10;
+loadingBarProgress.style.width = `${progress}%`;
+                    if (progress >= 100) {
+                        clearInterval(progressInterval);
+                        loadingBar.style.display = 'none';
+                        loadingBarProgress.style.width = '0';
+                        displayResult();
+                    }
+                }, 200);
+            });
+
+            function displayResult() {
                 const title = document.getElementById('title').value;
-                let url = document.getElementById('url').value;
-                const iconFile = document.getElementById('icon').files[0];
+                const url = document.getElementById('url').value;
                 const orgName = document.getElementById('org-name').value || 'My Organization';
                 const installDesc = document.getElementById('install-desc').value || 'Custom Web Clip Configuration';
                 const fileName = document.getElementById('file-name').value || 'webclip';
-                
-                if (!/^https?:\/\//i.test(url)) {
-                    url = 'https://' + url;
-                }
-                
-                if (iconFile) {
-                    showLoadingBar();
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        const iconData = e.target.result;
-                        generateWebclip(title, url, iconData, orgName, installDesc, fileName);
-                    };
-                    reader.readAsDataURL(iconFile);
-                }
+                const fullScreen = document.querySelector('.toggle-button[data-option="full-screen"].active').dataset.value;
+                const removable = document.querySelector('.toggle-button[data-option="removable"].active').dataset.value;
+                const ignoreManifestScope = document.querySelector('.toggle-button[data-option="ignore-manifest-scope"].active').dataset.value;
+                const precomposed = document.querySelector('.toggle-button[data-option="precomposed"].active').dataset.value;
+
+                const resultHTML = `
+                    <h2>Web Clip Configuration</h2>
+                    <p><strong>Title:</strong> ${title}</p>
+                    <p><strong>URL:</strong> ${url}</p>
+                    <p><strong>Organization Name:</strong> ${orgName}</p>
+                    <p><strong>Install Description:</strong> ${installDesc}</p>
+                    <p><strong>File Name:</strong> ${fileName}.mobileconfig</p>
+                    <p><strong>Full Screen:</strong> ${fullScreen}</p>
+                    <p><strong>Removable:</strong> ${removable}</p>
+                    <p><strong>Ignore Manifest Scope:</strong> ${ignoreManifestScope}</p>
+                    <p><strong>Precomposed:</strong> ${precomposed}</p>
+                    <p>Your Web Clip configuration file has been generated. You can now install it on your iOS device.</p>
+                `;
+
+                resultDiv.innerHTML = resultHTML;
+            }
+
+            // Add dark mode toggle functionality
+            const darkModeToggle = document.getElementById('dark-mode-toggle');
+            const body = document.body;
+
+            darkModeToggle.addEventListener('click', function() {
+                body.classList.toggle('dark-mode');
+                localStorage.setItem('darkMode', body.classList.contains('dark-mode'));
             });
+
+            // Check for saved dark mode preference
+            if (localStorage.getItem('darkMode') === 'true') {
+                body.classList.add('dark-mode');
+            }
         });
-
-        function generateWebclip(title, url, iconData, orgName, installDesc, fileName) {
-            const webclipContent = `<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>PayloadContent</key>
-    <array>
-        <dict>
-            <key>FullScreen</key>
-            <true/>
-            <key>Icon</key>
-            <data>${iconData.split(',')[1]}</data>
-            <key>IsRemovable</key>
-            <true/>
-            <key>Label</key>
-            <string>${title}</string>
-            <key>PayloadDescription</key>
-            <string>Configures Web Clip</string>
-            <key>PayloadDisplayName</key>
-            <string>${title} Web Clip</string>
-            <key>PayloadIdentifier</key>
-            <string>com.${orgName.toLowerCase().replace(/\s+/g, '')}.webclip.${Date.now()}</string>
-            <key>PayloadType</key>
-            <string>com.apple.webClip.managed</string>
-            <key>PayloadUUID</key>
-            <string>${generateUUID()}</string>
-            <key>PayloadVersion</key>
-            <integer>1</integer>
-            <key>URL</key>
-            <string>${url}</string>
-        </dict>
-    </array>
-    <key>PayloadDescription</key>
-    <string>${installDesc}</string>
-    <key>PayloadDisplayName</key>
-    <string>${title} Web Clip</string>
-    <key>PayloadIdentifier</key>
-    <string>com.${orgName.toLowerCase().replace(/\s+/g, '')}.webclip.${Date.now()}</string>
-    <key>PayloadRemovalDisallowed</key>
-    <false/>
-    <key>PayloadType</key>
-    <string>Configuration</string>
-    <key>PayloadUUID</key>
-    <string>${generateUUID()}</string>
-    <key>PayloadVersion</key>
-    <integer>1</integer>
-</dict>
-</plist>`;
-
-            const encodedContent = encodeURIComponent(webclipContent);
-            const dataUri = `data:application/x-apple-aspen-config;charset=utf-8,${encodedContent}`;
-            
-            const resultDiv = document.getElementById('result');
-            resultDiv.innerHTML = `
-                <p>Your webclip is ready! Click the button below to download:</p>
-                <a href="${dataUri}" download="${fileName}.mobileconfig">
-                    <button>Download Webclip</button>
-                </a>
-            `;
-            hideLoadingBar();
-        }
-
-        function generateUUID() {
-            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-                var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-                return v.toString(16);
-            });
-        }
-
-        function showLoadingBar() {
-            const loadingBar = document.querySelector('.loading-bar');
-            const progress = loadingBar.querySelector('.loading-bar-progress');
-            loadingBar.style.display = 'block';
-            progress.style.width = '0%';
-            setTimeout(() => {
-                progress.style.width = '100%';
-            }, 50);
-        }
-
-        function hideLoadingBar() {
-            const loadingBar = document.querySelector('.loading-bar');
-            loadingBar.style.display = 'none';
-        }
     </script>
 </body>
 </html>
