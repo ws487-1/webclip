@@ -23,6 +23,7 @@
       max-width: 800px;
       width: 100%;
       margin-bottom: 20px;
+      box-sizing: border-box;
     }
 
     .search-form {
@@ -108,14 +109,44 @@
       padding: 20px;
       max-width: 800px;
       width: 100%;
+      box-sizing: border-box;
       margin-top: 20px;
     }
 
+    .embed-container .video-wrapper {
+      position: relative;
+      padding-bottom: 56.25%; /* 16:9 aspect ratio */
+      height: 0;
+      overflow: hidden;
+    }
+
     .embed-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
-      height: 450px;
+      height: 100%;
       border: none;
       border-radius: 8px;
+    }
+
+    @media (max-width: 600px) {
+      .container, .embed-container {
+        padding: 15px;
+      }
+
+      .search-form input[type="text"] {
+        width: 60%;
+      }
+
+      .movie-list li {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .movie-list li button {
+        margin-top: 10px;
+      }
     }
   </style>
 </head>
@@ -130,7 +161,9 @@
   </div>
 
   <div class="embed-container" id="embedContainer">
-    <iframe src="" frameborder="0" allowfullscreen></iframe>
+    <div class="video-wrapper">
+      <iframe src="" frameborder="0" allowfullscreen></iframe>
+    </div>
   </div>
 
   <script>
@@ -194,11 +227,7 @@
       embedIframe.src = `https://multiembed.mov/?video_id=${imdbId}`;
       
       // Position the embed container below the clicked movie item
-      const rect = movieItem.getBoundingClientRect();
-      const containerRect = movieList.getBoundingClientRect();
-      embedContainer.style.position = 'absolute';
-      embedContainer.style.left = `${containerRect.left}px`;
-      embedContainer.style.top = `${rect.bottom + window.scrollY + 20}px`;
+      movieItem.after(embedContainer);
       
       // Scroll to the embed container
       embedContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
