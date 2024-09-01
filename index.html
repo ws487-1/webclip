@@ -3,234 +3,282 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Movie Search</title>
+  <title>webclip.me</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 20px;
-      background-color: #f0f2f5;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .container {
-      background-color: #ffffff;
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      padding: 30px;
       max-width: 800px;
-      width: 100%;
-      margin-bottom: 20px;
-      box-sizing: border-box;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f0f0f0;
     }
-
-    .search-form {
+    h1 {
+      text-align: center;
+      color: #333;
+      font-size: 2.5em;
+    }
+    #searchForm {
       display: flex;
-      justify-content: center;
       margin-bottom: 20px;
     }
-
-    .search-form input[type="text"] {
-      width: 70%;
-      padding: 12px;
+    #searchInput {
+      flex-grow: 1;
+      padding: 10px;
       font-size: 16px;
       border: 1px solid #ddd;
-      border-radius: 6px 0 0 6px;
+      border-radius: 4px 0 0 4px;
     }
-
-    .search-form button {
-      padding: 12px 20px;
-      background-color: #007bff;
+    #searchButton {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4CAF50;
       color: white;
       border: none;
-      border-radius: 0 6px 6px 0;
+      border-radius: 0 4px 4px 0;
       cursor: pointer;
-      transition: background-color 0.3s;
     }
-
-    .search-form button:hover {
-      background-color: #0056b3;
+    #searchButton:hover {
+      background-color: #45a049;
     }
-
-    .movie-list {
+    #resultList {
       list-style-type: none;
       padding: 0;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
     }
-
-    .movie-list li {
-      background-color: #f8f9fa;
-      border-radius: 8px;
-      padding: 15px;
+    #resultList li {
+      background-color: white;
       margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 4px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      transition: background-color 0.3s;
     }
-
-    .movie-list li:hover {
-      background-color: #e9ecef;
-    }
-
-    .movie-info {
-      flex-grow: 1;
-    }
-
-    .movie-title {
-      font-weight: bold;
+    .result-poster {
+      width: 60px;
+      height: 90px;
+      object-fit: cover;
       margin-right: 10px;
     }
-
-    .movie-year {
-      color: #6c757d;
+    .result-info {
+      flex-grow: 1;
     }
-
-    .movie-list li button {
-      padding: 8px 16px;
-      background-color: #28a745;
+    .result-title {
+      font-weight: bold;
+      display: block;
+    }
+    .result-year {
+      color: #666;
+      font-size: 0.9em;
+    }
+    #resultList li button {
+      padding: 5px 10px;
+      background-color: #008CBA;
       color: white;
       border: none;
       border-radius: 4px;
       cursor: pointer;
-      transition: background-color 0.3s;
     }
-
-    .movie-list li button:hover {
-      background-color: #218838;
+    #resultList li button:hover {
+      background-color: #007B9A;
     }
-
-    .embed-container {
+    #embedContainer {
       display: none;
-      background-color: #ffffff;
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      max-width: 800px;
-      width: 100%;
-      box-sizing: border-box;
       margin-top: 20px;
     }
-
-    .embed-container .video-wrapper {
-      position: relative;
-      padding-bottom: 56.25%; /* 16:9 aspect ratio */
-      height: 0;
-      overflow: hidden;
-    }
-
-    .embed-container iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
+    #embedContainer iframe {
       width: 100%;
-      height: 100%;
+      height: 450px;
       border: none;
-      border-radius: 8px;
     }
-
+    #episodeSelector {
+      display: none;
+      margin-top: 10px;
+    }
+    #episodeSelector select {
+      margin-right: 10px;
+      padding: 5px;
+    }
     @media (max-width: 600px) {
-      .container, .embed-container {
-        padding: 15px;
-      }
-
-      .search-form input[type="text"] {
-        width: 60%;
-      }
-
-      .movie-list li {
+      #searchForm {
         flex-direction: column;
-        align-items: flex-start;
       }
-
-      .movie-list li button {
+      #searchInput, #searchButton {
+        width: 100%;
+        border-radius: 4px;
+      }
+      #searchButton {
         margin-top: 10px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="search-form" id="searchForm">
-      <input type="text" id="searchInput" placeholder="Enter a movie name">
-      <button id="searchButton">Search</button>
+  <h1>Search For A Movie Or TV Show 🏴‍☠️</h1>
+  <form id="searchForm">
+    <input type="text" id="searchInput" placeholder="Search" required>
+    <button type="button" id="searchButton">Search</button>
+  </form>
+  <ul id="resultList"></ul>
+  <div id="embedContainer">
+    <iframe src="" frameborder="0" allowfullscreen></iframe>
+    <div id="episodeSelector">
+      <select id="seasonSelect"></select>
+      <select id="episodeSelect"></select>
     </div>
-
-    <ul class="movie-list" id="movieList"></ul>
   </div>
-
-  <div class="embed-container" id="embedContainer">
-    <div class="video-wrapper">
-      <iframe src="" frameborder="0" allowfullscreen></iframe>
-    </div>
-  </div>
-
   <script>
     const searchForm = document.getElementById('searchForm');
     const searchInput = document.getElementById('searchInput');
     const searchButton = document.getElementById('searchButton');
-    const movieList = document.getElementById('movieList');
+    const resultList = document.getElementById('resultList');
     const embedContainer = document.getElementById('embedContainer');
     const embedIframe = embedContainer.querySelector('iframe');
+    const episodeSelector = document.getElementById('episodeSelector');
+    const seasonSelect = document.getElementById('seasonSelect');
+    const episodeSelect = document.getElementById('episodeSelect');
+
+    let currentImdbId = '';
 
     searchButton.addEventListener('click', () => {
       const query = searchInput.value.trim();
       if (query) {
-        fetchMovies(query);
+        fetchResults(query);
       }
     });
 
-    function fetchMovies(query) {
+    function fetchResults(query) {
       fetch(`https://www.omdbapi.com/?s=${query}&apikey=8d49534e`)
         .then(response => response.json())
         .then(data => {
-          movieList.innerHTML = '';
+          resultList.innerHTML = '';
           if (data.Response === 'True') {
-            data.Search.forEach(movie => {
-              const movieItem = document.createElement('li');
+            data.Search.forEach(result => {
+              const resultItem = document.createElement('li');
               
-              const movieInfo = document.createElement('div');
-              movieInfo.className = 'movie-info';
+              const posterImg = document.createElement('img');
+              posterImg.className = 'result-poster';
+              posterImg.src = result.Poster !== 'N/A' ? result.Poster : 'https://via.placeholder.com/100x150?text=No+Poster';
+              posterImg.alt = `${result.Title} Poster`;
               
-              const movieTitle = document.createElement('span');
-              movieTitle.className = 'movie-title';
-              movieTitle.textContent = movie.Title;
+              const resultInfo = document.createElement('div');
+              resultInfo.className = 'result-info';
               
-              const movieYear = document.createElement('span');
-              movieYear.className = 'movie-year';
-              movieYear.textContent = `(${movie.Year})`;
+              const resultTitle = document.createElement('span');
+              resultTitle.className = 'result-title';
+              resultTitle.textContent = result.Title;
               
-              movieInfo.appendChild(movieTitle);
-              movieInfo.appendChild(movieYear);
+              const resultYear = document.createElement('span');
+              resultYear.className = 'result-year';
+              resultYear.textContent = `(${result.Year})`;
+              
+              resultInfo.appendChild(resultTitle);
+              resultInfo.appendChild(resultYear);
               
               const watchButton = document.createElement('button');
               watchButton.textContent = 'Watch';
-              watchButton.addEventListener('click', () => showEmbedContainer(movie.imdbID, movieItem));
+              watchButton.addEventListener('click', () => showEmbedContainer(result.imdbID, result.Type, resultItem));
 
-              movieItem.appendChild(movieInfo);
-              movieItem.appendChild(watchButton);
-              movieList.appendChild(movieItem);
+              resultItem.appendChild(posterImg);
+              resultItem.appendChild(resultInfo);
+              resultItem.appendChild(watchButton);
+              resultList.appendChild(resultItem);
             });
+            
+            // Fade in the results and scroll to them
+            setTimeout(() => {
+              resultList.style.opacity = '1';
+              resultList.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
           } else {
-            movieList.innerHTML = '<li>No movies found.</li>';
+            resultList.innerHTML = '<li>No results found.</li>';
+            resultList.style.opacity = '1';
           }
         })
         .catch(error => {
-          console.error('Error fetching movies:', error);
-          movieList.innerHTML = '<li>Error fetching movies. Please try again later.</li>';
+          console.error('Error fetching results:', error);
+          resultList.innerHTML = '<li>Error fetching results. Please try again later.</li>';
+          resultList.style.opacity = '1';
         });
     }
 
-    function showEmbedContainer(imdbId, movieItem) {
+    function showEmbedContainer(imdbId, type, resultItem) {
+      currentImdbId = imdbId;
       embedContainer.style.display = 'block';
-      embedIframe.src = `https://multiembed.mov/?video_id=${imdbId}`;
       
-      // Position the embed container below the clicked movie item
-      movieItem.after(embedContainer);
+      if (type === 'series') {
+        episodeSelector.style.display = 'block';
+        fetchEpisodes(imdbId);
+      } else {
+        episodeSelector.style.display = 'none';
+        updateEmbedSrc(imdbId);
+      }
       
-      // Scroll to the embed container
+      resultItem.after(embedContainer);
       embedContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function fetchEpisodes(imdbId) {
+      fetch(`https://www.omdbapi.com/?i=${imdbId}&apikey=8d49534e`)
+        .then(response => response.json())
+        .then(data => {
+          const totalSeasons = parseInt(data.totalSeasons);
+          populateSeasonSelect(totalSeasons);
+          seasonSelect.addEventListener('change', () => fetchSeasonEpisodes(imdbId, seasonSelect.value));
+          fetchSeasonEpisodes(imdbId, 1);
+        })
+        .catch(error => {
+          console.error('Error fetching series info:', error);
+        });
+    }
+
+    function populateSeasonSelect(totalSeasons) {
+      seasonSelect.innerHTML = '';
+      for (let i = 1; i <= totalSeasons; i++) {
+        const option = document.createElement('option');
+        option.value = i;
+        option.textContent = `Season ${i}`;
+        seasonSelect.appendChild(option);
+      }
+    }
+
+    function fetchSeasonEpisodes(imdbId, season) {
+      fetch(`https://www.omdbapi.com/?i=${imdbId}&Season=${season}&apikey=8d49534e`)
+        .then(response => response.json())
+        .then(data => {
+          populateEpisodeSelect(data.Episodes);
+        })
+        .catch(error => {
+          console.error('Error fetching season episodes:', error);
+        });
+    }
+
+    function populateEpisodeSelect(episodes) {
+      episodeSelect.innerHTML = '';
+      episodes.forEach(episode => {
+        const option = document.createElement('option');
+        option.value = episode.Episode;
+        option.textContent = `Episode ${episode.Episode}: ${episode.Title}`;
+        episodeSelect.appendChild(option);
+      });
+      episodeSelect.removeEventListener('change', updateEmbedSrcForSeries);
+      episodeSelect.addEventListener('change', updateEmbedSrcForSeries);
+      updateEmbedSrcForSeries();
+    }
+
+    function updateEmbedSrc(imdbId, season = '', episode = '') {
+      let src = `https://multiembed.mov/?video_id=${imdbId}`;
+      if (season && episode) {
+        src += `&s=${season}&e=${episode}`;
+      }
+      embedIframe.src = src;
+    }
+
+    function updateEmbedSrcForSeries() {
+      const season = seasonSelect.value;
+      const episode = episodeSelect.value;
+      updateEmbedSrc(currentImdbId, season, episode);
     }
   </script>
 </body>
