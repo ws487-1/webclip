@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>webclip.me</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600&display=swap" rel="stylesheet">
 <style>
     body {
-        font-family: 'Space Grotesk', sans-serif;
-        background-color: #000000;
+        font-family: 'Manrope', sans-serif;
+        background-color: #0f1021;
         color: #FFFFFF;
         margin: 0;
         padding: 20px;
@@ -20,22 +20,9 @@
     }
     h1 {
         font-weight: 600;
-        font-size: 36px;
+        font-size: 50px;
         text-align: center;
         margin-top: 50px;
-    }
-    h1 span {
-        display: inline-block;
-        transition: transform 0.3s ease-in-out;
-    }
-    h1 span:hover {
-        transform: rotate(-15deg);
-    }
-    .slogan {
-        font-weight: 400;
-        font-size: 18px;
-        text-align: center;
-        margin: 10px 0 30px;
     }
     #search-form {
         display: flex;
@@ -50,14 +37,14 @@
         border-radius: 0;
         width: 100%;
         margin-right: -1px;
-        background-color: #000000;
+        background-color: #0f1021;
         color: #FFFFFF;
     }
     #search-button {
         padding: 10px;
         font-size: 16px;
         border: 1px solid #FFFFFF;
-        background-color: #000000;
+        background-color: #0f1021;
         color: #FFFFFF;
         cursor: pointer;
         transition: background-color 0.3s;
@@ -70,17 +57,17 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        gap: 15px;
-        width: 90%;
+        gap: 10px;
+        width: 100%;
     }
     .result {
         cursor: pointer;
-        width: 150px;
+        width: 160px;
         display: flex;
         flex-direction: column;
         align-items: center;
         text-align: center;
-        transition: transform 0.3s ease-in-out;
+        transition: transform 0.2s ease-in-out;
     }
     .result:hover {
         transform: scale(1.05);
@@ -90,9 +77,9 @@
         border-radius: 8px;
     }
     .movie-info {
-        padding: 8px;
-        background-color: #000000;
-        font-size: 14px;
+        padding: 1px;
+        background-color: #0f1021;
+        font-size: 10px;
     }
     #video-player-container {
         display: none;
@@ -103,11 +90,11 @@
     }
     #video-player {
         width: 100%;
-        height: 720px;
         position: relative;
+        padding-top: 56.25%;
         border-radius: 10px;
         overflow: hidden;
-        margin-top: 15px; /* Add this line to create space above the video player */
+        margin-top: 15px;
     }
     #video-player iframe {
         position: absolute;
@@ -125,23 +112,40 @@
     }
     .controls select {
         padding: 5px;
-        background-color: #000000;
+        background-color: #0f1021;
         color: #FFFFFF;
         border: 1px solid #FFFFFF;
     }
-    footer {
-        text-align: center;
-        font-size: 12px;
-        color: #AAAAAA;
-        margin-top: auto;
-        padding: 20px 0;
-        width: 100%;
+    #results-title {
+        font-size: 24px;
+        font-weight: 600;
+        color: #FFFFFF;
+        margin-top: 30px;
+    }
+    #results-section {
+        width: 90%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .load-more {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #1a1f2e;
+        color: #FFFFFF;
+        border: 1px solid #FFFFFF;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        font-family: 'Manrope', sans-serif;
+        margin-top: 20px;
+    }
+    .load-more:hover {
+        background-color: #333333;
     }
 </style>
 </head>
 <body>
-    <h1 id="title"><span>webclip.me</span></h1>
-    <div class="slogan">minimalistic entertainment system</div>
+    <h1 id="title">webclip.me</h1>
     <form id="search-form">
         <input type="text" id="search-input" placeholder="Search for a movie or TV show...">
         <button type="submit" id="search-button">Search</button>
@@ -173,169 +177,279 @@
         </div>
     </div>
 
-    <div id="results"></div>
+    <div id="results-section">
+        <h2 id="results-title" style="text-align: center; margin-bottom: 20px;">Popular Movies:</h2>
+        <div id="results"></div>
+    </div>
 
-    <footer>
-        Ads may appear depending on the source, they are embedded into the video players and they’re out of my control. I would heavily recommend using an ad-blocker such as UBlock Origin or AdGuard for iOS.<br><br>
-        Disclaimer: This website does not host any content. It provides links to third-party streaming services. Any legal issues related to the content should be addressed with the respective third-party services and not with this website.<br><br>
-        Contact me at: excalibur.stream@proton.me
-    </footer>
+    <div id="load-more-container" style="display: none; margin: 20px 0;">
+        <button id="load-more-button" class="load-more">Load More</button>
+    </div>
 
 <script>
-    const tmdbApiKey = 'a7601cfeacbd8bc8fd877c4f2d2bbe86';
-    const searchForm = document.getElementById('search-form');
-    const searchInput = document.getElementById('search-input');
-    const resultsContainer = document.getElementById('results');
-    const videoPlayerContainer = document.getElementById('video-player-container');
-    const videoPlayerIframe = document.getElementById('video-player-iframe');
-    const sourceSelect = document.getElementById('source');
-    const seasonSelect = document.getElementById('season');
-    const episodeSelect = document.getElementById('episode');
+const tmdbApiKey = 'a7601cfeacbd8bc8fd877c4f2d2bbe86';
+const searchForm = document.getElementById('search-form');
+const searchInput = document.getElementById('search-input');
+const resultsContainer = document.getElementById('results');
+const videoPlayerContainer = document.getElementById('video-player-container');
+const videoPlayerIframe = document.getElementById('video-player-iframe');
+const sourceSelect = document.getElementById('source');
+const seasonSelect = document.getElementById('season');
+const episodeSelect = document.getElementById('episode');
 
-    const sources = [
-        { name: 'vidlink.pro', movieUrl: tmdbId => `https://vidlink.pro/movie/${tmdbId}`, series: false },
-        { name: 'vidsrc.nl', movieUrl: tmdbId => `https://player.vidsrc.nl/embed/movie/${tmdbId}`, seriesUrl: (tmdbId, season, episode) => `https://player.vidsrc.nl/embed/tv/${tmdbId}/${season}/${episode}`, series: true },
-        { name: 'vidsrc.cc', movieUrl: tmdbId => `https://vidsrc.cc/v2/embed/movie/${tmdbId}`, seriesUrl: (tmdbId, season, episode) => `https://v2.vidsrc.me/embed/${tmdbId}/${season}-${episode}`, series: true },
-        { name: 'vidsrc.to', movieUrl: tmdbId => `https://vidsrc.to/embed/movie/${tmdbId}`, seriesUrl: (tmdbId, season, episode) => `https://vidsrc.to/embed/tv/${tmdbId}/${season}-${episode}`, series: true },
-        { name: 'vidsrc.icu', movieUrl: tmdbId => `https://vidsrc.icu/embed/movie/${tmdbId}`, seriesUrl: (tmdbId, season, episode) => `https://vidsrc.icu/embed/tv/${tmdbId}/${season}/${episode}`, series: true },
-        { name: 'vidsrc.top', movieUrl: tmdbId => `https://vidsrc.top/embed/movie/tmdb/${tmdbId}`, seriesUrl: (tmdbId, season, episode) => `https://vidsrc.top/embed/tv/tmdb/${tmdbId}/${season}/${episode}`, series: true },
-        { name: 'autoembed.cc', movieUrl: tmdbId => `https://player.autoembed.cc/embed/movie/${tmdbId}`, seriesUrl: (tmdbId, season, episode) => `https://player.autoembed.cc/embed/tv/${tmdbId}/${season}/${episode}`, series: true },   
-        { name: 'multiembed.mov', movieUrl: tmdbId => `https://multiembed.mov/?video_id=${tmdbId}`, seriesUrl: (tmdbId, season, episode) => `https://multiembed.mov/?video_id=${tmdbId}&s=${season}&e=${episode}`, series: true },
-        { name: 'multiembed.mov vip', movieUrl: tmdbId => `https://multiembed.mov/directstream.php?video_id=${tmdbId}`, seriesUrl: (tmdbId, season, episode) => `https://multiembed.mov/directstream.php?video_id=${tmdbId}&s=${season}&e=${episode}`, series: true },  
-        { name: 'nontongo.win', movieUrl: tmdbId => `https://www.NontonGo.win/embed/movie/${tmdbId}`, seriesUrl: (tmdbId, season, episode) => `https://www.NontonGo.win/embed/tv/${tmdbId}/${season}/${episode}`, series: true },           
-    ];      
-    let selectedSource = sources[0];
-    let currentMovie, currentSeason, currentEpisode;
+let currentPage = 1;
+let lastSearchTerm = '';
+let hasMoreResults = true;
+let currentMovie = null;
+let currentSeason, currentEpisode;
 
-    // Refresh page when the title is clicked
-    const title = document.getElementById('title');
-    title.addEventListener('click', () => {
-        location.reload();
-    });
-
-    // Fetch search results from TMDB
-    async function searchMovies(term) {
-        try {
-            const response = await fetch(`https://api.themoviedb.org/3/search/multi?api_key=${tmdbApiKey}&query=${encodeURIComponent(term)}`);
-            const data = await response.json();
-            return data.results.filter(item => item.media_type === 'movie' || item.media_type === 'tv') || [];
-        } catch (error) {
-            console.error('Error fetching movie data:', error);
-            return [];
-        }
+const sources = [
+    {
+        "name": "vidlink.pro",
+        "movieUrl": tmdbId => `https://vidlink.pro/movie/${tmdbId}`,
+        "series": false
+    },
+    {
+        "name": "vidsrc.nl",
+        "movieUrl": tmdbId => `https://player.vidsrc.nl/embed/movie/${tmdbId}`,
+        "seriesUrl": (tmdbId, season, episode) => `https://player.vidsrc.nl/embed/tv/${tmdbId}/${season}/${episode}`,
+        "series": true
+    },
+    {
+        "name": "vidsrc.cc",
+        "movieUrl": tmdbId => `https://vidsrc.cc/v2/embed/movie/${tmdbId}`,
+        "seriesUrl": (tmdbId, season, episode) => `https://v2.vidsrc.me/embed/${tmdbId}/${season}-${episode}`,
+        "series": true
+    },
+    {
+        "name": "vidsrc.to",
+        "movieUrl": tmdbId => `https://vidsrc.to/embed/movie/${tmdbId}`,
+        "seriesUrl": (tmdbId, season, episode) => `https://vidsrc.to/embed/tv/${tmdbId}/${season}-${episode}`,
+        "series": true
+    },
+    {
+        "name": "vidsrc.icu",
+        "movieUrl": tmdbId => `https://vidsrc.icu/embed/movie/${tmdbId}`,
+        "seriesUrl": (tmdbId, season, episode) => `https://vidsrc.icu/embed/tv/${tmdbId}/${season}/${episode}`,
+        "series": true
+    },
+    {
+        "name": "vidsrc.top",
+        "movieUrl": tmdbId => `https://vidsrc.top/embed/movie/imdb/${tmdbId}`,
+        "seriesUrl": (tmdbId, season, episode) => `https://vidsrc.top/embed/tv/imdb/${tmdbId}/${season}/${episode}`,
+        "series": true
+    },
+    {
+        "name": "autoembed.cc",
+        "movieUrl": tmdbId => `https://player.autoembed.cc/embed/movie/${tmdbId}`,
+        "seriesUrl": (tmdbId, season, episode) => `https://player.autoembed.cc/embed/tv/${tmdbId}/${season}/${episode}`,
+        "series": true
+    },
+    {
+        "name": "multiembed.mov",
+        "movieUrl": tmdbId => `https://multiembed.mov/?video_id=${tmdbId}`,
+        "seriesUrl": (tmdbId, season, episode) => `https://multiembed.mov/?video_id=${tmdbId}&s=${season}&e=${episode}`,
+        "series": true
+    },
+    {
+        "name": "multiembed.mov vip",
+        "movieUrl": tmdbId => `https://multiembed.mov/directstream.php?video_id=${tmdbId}`,
+        "seriesUrl": (tmdbId, season, episode) => `https://multiembed.mov/directstream.php?video_id=${tmdbId}&s=${season}&e=${episode}`,
+        "series": true
+    },
+    {
+        "name": "nontongo.win",
+        "movieUrl": tmdbId => `https://www.NontonGo.win/embed/movie/${tmdbId}`,
+        "seriesUrl": (tmdbId, season, episode) => `https://www.NontonGo.win/embed/tv/${tmdbId}/${season}/${episode}`,
+        "series": true
     }
+];
 
-    // Display search results
-    function displayMovies(movies) {
+let selectedSource = sources[0];
+
+const title = document.getElementById('title');
+title.addEventListener('click', () => {
+    location.reload();
+});
+
+async function searchMovies(term, page = 1) {
+    try {
+        const response = await fetch(`https://api.themoviedb.org/3/search/multi?api_key=${tmdbApiKey}&query=${encodeURIComponent(term)}&page=${page}`);
+        const data = await response.json();
+        hasMoreResults = data.page < data.total_pages;
+        return data.results.filter(item => item.media_type === 'movie' || item.media_type === 'tv') || [];
+    } catch (error) {
+        console.error('Error fetching movie data:', error);
+        return [];
+    }
+}
+
+function displayMovies(movies, append = false) {
+    const resultsTitle = document.getElementById('results-title');
+    resultsTitle.textContent = searchInput.value.trim() ? 'Search Results' : 'Popular Movies';
+    
+    if (!append) {
         resultsContainer.innerHTML = '';
-        movies.forEach(movie => {
-            const resultDiv = document.createElement('div');
-            resultDiv.classList.add('result');
-
-            const poster = document.createElement('img');
-            poster.classList.add('poster');
-            poster.src = movie.poster_path ? `https://image.tmdb.org/t/p/w200${movie.poster_path}` : 'https://via.placeholder.com/200x300?text=No+Image';
-            poster.alt = `${movie.title || movie.name} Poster`;
-
-            const movieInfo = document.createElement('div');
-            movieInfo.classList.add('movie-info');
-            movieInfo.innerHTML = `<strong>${movie.title || movie.name}</strong><br>(${movie.release_date ? movie.release_date.substring(0, 4) : movie.first_air_date ? movie.first_air_date.substring(0, 4) : 'N/A'})`;
-
-            resultDiv.appendChild(poster);
-            resultDiv.appendChild(movieInfo);
-
-            resultDiv.onclick = async () => {
-                if (movie.media_type === 'tv') {
-                    const totalSeasons = await fetchSeasonData(movie.id);
-                    displaySourceSelector(movie, totalSeasons, 1);
-                } else {
-                    displaySourceSelector(movie, null, null);
-                }
-            };
-
-            resultsContainer.appendChild(resultDiv);
-        });
     }
 
-    // Handle search form submission
-    searchForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const searchTerm = searchInput.value.trim();
-        if (searchTerm) {
-            const movies = await searchMovies(searchTerm);
-            displayMovies(movies);
-        }
+    movies.forEach(movie => {
+        const resultDiv = document.createElement('div');
+        resultDiv.classList.add('result');
+        const poster = document.createElement('img');
+        poster.classList.add('poster');
+        poster.src = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://i.ibb.co/HFcKWhg/Untitled-design.jpg';
+        poster.alt = `${movie.title || movie.name} Poster`;
+        const movieInfo = document.createElement('div');
+        movieInfo.classList.add('movie-info');
+        movieInfo.innerHTML = `<strong>${movie.title || movie.name}</strong><br>(${movie.release_date ? movie.release_date.substring(0, 4) : movie.first_air_date ? movie.first_air_date.substring(0, 4) : 'N/A'})`;
+        resultDiv.appendChild(poster);
+        resultDiv.appendChild(movieInfo);
+        resultDiv.onclick = async () => {
+            if (movie.media_type === 'tv') {
+                const totalSeasons = await fetchSeasonData(movie.id);
+                displaySourceSelector(movie, totalSeasons, 1);
+            } else {
+                displaySourceSelector(movie, null, null);
+            }
+        };
+        resultsContainer.appendChild(resultDiv);
     });
 
-    // Fetch season data for series
-    async function fetchSeasonData(tmdbId) {
-        const response = await fetch(`https://api.themoviedb.org/3/tv/${tmdbId}?api_key=${tmdbApiKey}`);
-        const data = await response.json();
-        return data.number_of_seasons || 1;
+    const loadMoreContainer = document.getElementById('load-more-container');
+    loadMoreContainer.style.display = hasMoreResults ? 'block' : 'none';
+}
+
+searchForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const searchTerm = searchInput.value.trim();
+    currentPage = 1;
+    lastSearchTerm = searchTerm;
+    
+    if (searchTerm) {
+        videoPlayerContainer.style.display = 'none';
+        currentMovie = null;
+        videoPlayerIframe.src = '';
+        
+        const movies = await searchMovies(searchTerm, currentPage);
+        displayMovies(movies, false);
+    } else {
+        const popularMovies = await fetchPopularMovies(currentPage);
+        displayMovies(popularMovies.map(movie => ({ ...movie, media_type: 'movie' })), false);
     }
+});
 
-    // Display video player and source selector
-    function displaySourceSelector(movie, totalSeasons, season) {
-        currentMovie = movie;
-        currentSeason = season || null;
-        currentEpisode = 1;
+async function fetchPopularMovies(page = 1) {
+    try {
+        const response = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${tmdbApiKey}&language=en-US&page=${page}`);
+        const data = await response.json();
+        hasMoreResults = data.page < data.total_pages;
+        return data.results || [];
+    } catch (error) {
+        console.error('Error fetching popular movies:', error);
+        return [];
+    }
+}
 
-        sourceSelect.innerHTML = sources.map((src, idx) => `<option value="${idx}">${src.name}</option>`).join('');
-        sourceSelect.onchange = () => selectSource(parseInt(sourceSelect.value));
+async function fetchSeasonData(tmdbId) {
+    const response = await fetch(`https://api.themoviedb.org/3/tv/${tmdbId}?api_key=${tmdbApiKey}`);
+    const data = await response.json();
+    return data.number_of_seasons || 1;
+}
 
-        if (totalSeasons) {
-            seasonSelect.innerHTML = Array.from({ length: totalSeasons }, (_, i) => `<option value="${i + 1}">Season ${i + 1}</option>`).join('');
-            seasonSelect.onchange = () => {
-                currentSeason = parseInt(seasonSelect.value);
-                episodeSelect.innerHTML = '';
-                loadEpisodes(currentSeason);
-            };
-            seasonSelect.style.display = 'inline-block';
-            episodeSelect.style.display = 'inline-block';
+function displaySourceSelector(movie, totalSeasons, season) {
+    currentMovie = movie;
+    currentSeason = season || null;
+    currentEpisode = 1;
+
+    sourceSelect.innerHTML = sources.map((src, idx) => `<option value="${idx}">${src.name}</option>`).join('');
+    sourceSelect.onchange = () => selectSource(parseInt(sourceSelect.value));
+
+    if (totalSeasons) {
+        seasonSelect.innerHTML = Array.from({ length: totalSeasons }, (_, i) => `<option value="${i + 1}">Season ${i + 1}</option>`).join('');
+        seasonSelect.onchange = () => {
+            currentSeason = parseInt(seasonSelect.value);
+            episodeSelect.innerHTML = '';
             loadEpisodes(currentSeason);
-        } else {
-            seasonSelect.style.display = 'none';
-            episodeSelect.style.display = 'none';
-            playMovie(movie.id);
-        }
-
-        videoPlayerContainer.style.display = 'flex';
-    }
-
-    // Load episodes for the selected season
-    async function loadEpisodes(season) {
-        const response = await fetch(`https://api.themoviedb.org/3/tv/${currentMovie.id}/season/${season}?api_key=${tmdbApiKey}`);
-        const data = await response.json();
-        const episodes = data.episodes || [];
-        episodeSelect.innerHTML = episodes.map((ep, idx) => `<option value="${ep.episode_number}">${ep.episode_number}: ${ep.name}</option>`).join('');
-        episodeSelect.onchange = () => {
-            currentEpisode = parseInt(episodeSelect.value);
-            playSeries(currentMovie.id, currentSeason, currentEpisode);
         };
+        seasonSelect.style.display = 'inline-block';
+        episodeSelect.style.display = 'inline-block';
+        loadEpisodes(currentSeason);
+    } else {
+        seasonSelect.style.display = 'none';
+        episodeSelect.style.display = 'none';
+        playMovie(movie.id);
+    }
+
+    videoPlayerContainer.style.display = 'flex';
+}
+
+async function loadEpisodes(season) {
+    const response = await fetch(`https://api.themoviedb.org/3/tv/${currentMovie.id}/season/${season}?api_key=${tmdbApiKey}`);
+    const data = await response.json();
+    const episodes = data.episodes || [];
+    episodeSelect.innerHTML = episodes.map((ep, idx) => `<option value="${ep.episode_number}">${ep.episode_number}: ${ep.name}</option>`).join('');
+    episodeSelect.onchange = () => {
+        currentEpisode = parseInt(episodeSelect.value);
         playSeries(currentMovie.id, currentSeason, currentEpisode);
-    }
+    };
+    playSeries(currentMovie.id, currentSeason, currentEpisode);
+}
 
-    // Play movie from selected source
-    function playMovie(tmdbId) {
-        const movieUrl = selectedSource.movieUrl(tmdbId);
-        videoPlayerIframe.src = movieUrl;
-    }
+function playMovie(tmdbId) {
+    const movieUrl = selectedSource.movieUrl(tmdbId);
+    videoPlayerIframe.src = movieUrl;
+}
 
-    // Play series from selected source
-    function playSeries(tmdbId, season, episode) {
+function playSeries(tmdbId, season, episode) {
+    if (selectedSource.seriesUrl) {
         const seriesUrl = selectedSource.seriesUrl(tmdbId, season, episode);
         videoPlayerIframe.src = seriesUrl;
+    } else {
+        alert('This source does not support TV series.');
     }
+}
 
-    // Select source and play the content
-    function selectSource(index) {
-        selectedSource = sources[index];
+function selectSource(index) {
+    selectedSource = sources[index];
+    if (currentMovie) {
         if (currentMovie.media_type === 'tv') {
             playSeries(currentMovie.id, currentSeason, currentEpisode);
         } else {
             playMovie(currentMovie.id);
         }
     }
+}
+
+function updateSourceSelector() {
+    sourceSelect.innerHTML = sources.map((src, idx) => `<option value="${idx}">${src.name}</option>`).join('');
+    if (sources.length > 0) {
+        selectSource(0);
+    } else {
+        sourceSelect.innerHTML = '<option value="">No sources available</option>';
+    }
+}
+
+document.getElementById('load-more-button').addEventListener('click', async () => {
+    currentPage++;
+    let newMovies;
+    
+    if (lastSearchTerm) {
+        newMovies = await searchMovies(lastSearchTerm, currentPage);
+    } else {
+        newMovies = await fetchPopularMovies(currentPage);
+        newMovies = newMovies.map(movie => ({ ...movie, media_type: 'movie' }));
+    }
+    
+    displayMovies(newMovies, true);
+});
+
+window.onload = async function() {
+    currentPage = 1;
+    lastSearchTerm = '';
+    updateSourceSelector();
+    const popularMovies = await fetchPopularMovies(currentPage);
+    displayMovies(popularMovies.map(movie => ({ ...movie, media_type: 'movie' })), false);
+};
 </script>
 </body>
 </html>
