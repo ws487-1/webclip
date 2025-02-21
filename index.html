@@ -178,7 +178,7 @@
     </div>
 
     <div id="results-section">
-        <h2 id="results-title" style="text-align: center; margin-bottom: 20px;">Popular Movies:</h2>
+        <h2 id="results-title" style="text-align: center; margin-bottom: 20px;">Popular Movies</h2>
         <div id="results"></div>
     </div>
 
@@ -247,14 +247,14 @@ const sources = [
     },
     {
         "name": "multiembed.mov",
-        "movieUrl": tmdbId => `https://multiembed.mov/?video_id=${tmdbId}`,
-        "seriesUrl": (tmdbId, season, episode) => `https://multiembed.mov/?video_id=${tmdbId}&s=${season}&e=${episode}`,
+        "movieUrl": tmdbId => `https://multiembed.mov/?video_id=${tmdbId}&tmdb=1`,
+        "seriesUrl": (tmdbId, season, episode) => `https://multiembed.mov/?video_id=${tmdbId}&tmdb=1&s=${season}&e=${episode}`,
         "series": true
     },
     {
         "name": "multiembed.mov vip",
-        "movieUrl": tmdbId => `https://multiembed.mov/directstream.php?video_id=${tmdbId}`,
-        "seriesUrl": (tmdbId, season, episode) => `https://multiembed.mov/directstream.php?video_id=${tmdbId}&s=${season}&e=${episode}`,
+        "movieUrl": tmdbId => `https://multiembed.mov/directstream.php?video_id=${tmdbId}&tmdb=1`,
+        "seriesUrl": (tmdbId, season, episode) => `https://multiembed.mov/directstream.php?video_id=${tmdbId}&tmdb=1&s=${season}&e=${episode}`,
         "series": true
     },
     {
